@@ -1,0 +1,420 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package macro;
+
+import java.util.Collection;
+import java.util.List;
+import star.base.neo.DoubleVector;
+import star.base.neo.NeoObjectVector;
+import star.common.CartesianCoordinateSystem;
+import star.common.LabCoordinateSystem;
+import star.common.PartCurve;
+import star.common.PartSurface;
+import star.common.Simulation;
+import star.common.SimulationPartManager;
+import star.common.StarMacro;
+import star.common.Units;
+import star.meshing.MeshPart;
+import star.meshing.MeshPartFactory;
+import star.meshing.PartRepresentation;
+import star.meshing.PartSurfaceMeshWidget;
+import star.meshing.RootDescriptionSource;
+import star.meshing.SimpleBlockPart;
+import star.meshing.SimulationMeshPartDescriptionSourceManager;
+import star.meshing.SurfaceMeshWidgetDisplayController;
+import star.meshing.SurfaceMeshWidgetQueryController;
+import star.meshing.SurfaceMeshWidgetSelectController;
+import star.meshing.SurfaceMeshWidgetSelectOptions;
+import star.vis.Scene;
+
+/**
+ *
+ * @author chc
+ */
+public class BlockAndaxis extends StarMacro {
+
+    @Override
+    public void execute() {
+
+        Simulation simulation_0 = getActiveSimulation();
+        PartRepresentation partRepresentation_0 = ((PartRepresentation) simulation_0.getRepresentationManager().getObject("Geometry"));
+        Scene scene_0 = simulation_0.getSceneManager().getScene("Geometry Scene 1");
+        PartSurfaceMeshWidget partSurfaceMeshWidget_2 = partRepresentation_0.startSurfaceMeshWidget(scene_0);
+        MeshPart simpleCylinderPart_0
+                = ((MeshPart) simulation_0.get(SimulationPartManager.class).getPart("zhengti_wailiuchang"));
+        MeshPart zhengchePart
+                = ((MeshPart) simulation_0.get(SimulationPartManager.class).getPart("zhengche"));//获取整车part
+        RootDescriptionSource rootDescriptionSource_0 = simulation_0.get(SimulationMeshPartDescriptionSourceManager.class).getRootDescriptionSource();
+        partSurfaceMeshWidget_2.setActiveParts(new NeoObjectVector(new Object[]{simpleCylinderPart_0,zhengchePart}), rootDescriptionSource_0);
+        partSurfaceMeshWidget_2.startSurfaceRepairControllers();//start surface repair
+        scene_0.setAdvancedRenderingEnabled(false);
+        SurfaceMeshWidgetDisplayController surfaceMeshWidgetDisplayController_2
+                = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetDisplayController.class);
+        surfaceMeshWidgetDisplayController_2.showAllFaces();
+
+        SurfaceMeshWidgetSelectController surfaceMeshWidgetSelectController_2
+                = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetSelectController.class);
+
+        LabCoordinateSystem labCoordinateSystem_0
+                = simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
+        Units units_0
+                = ((Units) simulation_0.getUnitsManager().getObject("m"));
+
+//        Collection<PartSurface> partSurface_0
+//                = (Collection<PartSurface>) simpleCylinderPart_0.getPartSurfaceManager().getPartSurfaces();
+//        partSurface_0.forEach(partSurface -> {
+//            if (partSurface.getPresentationName().contains("lun")) {
+//                surfaceMeshWidgetSelectController_2.selectPartSurface(partSurface);
+//                SurfaceMeshWidgetQueryController surfaceMeshWidgetQueryController_2
+//                        = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetQueryController.class);
+//
+//                DoubleVector corner1 = surfaceMeshWidgetQueryController_2.queryFaceGeometricRange().getDoubleVector("LabMinRange");
+//                DoubleVector corner2 = surfaceMeshWidgetQueryController_2.queryFaceGeometricRange().getDoubleVector("LabMaxRange");
+//                
+//                corner1.set(0, corner1.get(0) - 0.01);
+//                corner1.set(1, corner1.get(1) - 0.01);
+//                corner1.set(2, corner1.get(2) - 0.01);
+//                corner2.set(0, corner2.get(0) + 0.01);
+//                corner2.set(1, corner2.get(1) + 0.01);
+//                corner2.set(2, corner2.get(2) + 0.01);
+////                BrickVolumeShape brickVolumeShape_1
+////                        = (BrickVolumeShape) simulation_0.get(VolumeShapeManager.class).createBrickVolumeShape();
+//                MeshPartFactory meshPartFactory_0
+//                        = simulation_0.get(MeshPartFactory.class);
+//                SimpleBlockPart simpleBlockPart_0
+//                        = meshPartFactory_0.createNewBlockPart(simulation_0.get(SimulationPartManager.class));
+//                simpleBlockPart_0.setPresentationName("jiami" + partSurface.getPresentationName());
+//
+//                simpleBlockPart_0.setCoordinateSystem(labCoordinateSystem_0);
+//
+//                simpleBlockPart_0.getCorner1().setCoordinateSystem(labCoordinateSystem_0);
+//
+//                simpleBlockPart_0.getCorner1().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+//
+//                simpleBlockPart_0.getCorner1().setUnits0(units_0);
+//
+//                simpleBlockPart_0.getCorner1().setUnits1(units_0);
+//
+//                simpleBlockPart_0.getCorner1().setUnits2(units_0);
+//
+//                simpleBlockPart_0.getCorner1().setDefinition("");
+//
+//                simpleBlockPart_0.getCorner1().setValue(corner1);
+//
+//                simpleBlockPart_0.getCorner2().setCoordinateSystem(labCoordinateSystem_0);
+//
+//                simpleBlockPart_0.getCorner2().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+//
+//                simpleBlockPart_0.getCorner2().setUnits0(units_0);
+//
+//                simpleBlockPart_0.getCorner2().setUnits1(units_0);
+//
+//                simpleBlockPart_0.getCorner2().setUnits2(units_0);
+//
+//                simpleBlockPart_0.getCorner2().setDefinition("");
+//
+//                simpleBlockPart_0.getCorner2().setValue(corner2);
+//                surfaceMeshWidgetSelectController_2.deselectPartSurface((PartSurface) partSurface);
+//            }
+//        });
+        
+
+        //创建加密区1
+
+        Collection<PartSurface> zhengchePartSurfaces = zhengchePart.getPartSurfaces();
+        surfaceMeshWidgetSelectController_2.selectPartSurfaces((List<PartSurface>) zhengchePartSurfaces);
+        SurfaceMeshWidgetQueryController surfaceMeshWidgetQueryController_2
+                = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetQueryController.class);
+        DoubleVector corner1 = surfaceMeshWidgetQueryController_2.queryFaceGeometricRange().getDoubleVector("LabMinRange");
+        DoubleVector corner2 = surfaceMeshWidgetQueryController_2.queryFaceGeometricRange().getDoubleVector("LabMaxRange");
+//        corner1.set(0, corner1.get(0) + Double.parseDouble(panel.corner1_x.getText()));
+        corner1.set(0, corner1.get(0) + (corner1.get(0) - corner2.get(0)) * Double.parseDouble(panel.corner1_x.getText()));
+        corner1.set(1, corner1.get(1) + (corner1.get(1) - corner2.get(1)) * Double.parseDouble(panel.corner1_y.getText()));
+        corner1.set(2, corner1.get(2) + (corner1.get(2) - corner2.get(2)) * Double.parseDouble(panel.corner1_z.getText()));
+        corner2.set(0, corner2.get(0) + (corner2.get(0) - corner1.get(0)) * Double.parseDouble(panel.corner2_x.getText()));
+        corner2.set(1, corner2.get(1) + (corner2.get(1) - corner1.get(1)) * Double.parseDouble(panel.corner2_y.getText()));
+        corner2.set(2, corner2.get(2) + (corner2.get(2) - corner1.get(2)) * Double.parseDouble(panel.corner2_z.getText()));
+//                BrickVolumeShape brickVolumeShape_1
+//                        = (BrickVolumeShape) simulation_0.get(VolumeShapeManager.class).createBrickVolumeShape();
+        MeshPartFactory meshPartFactory_0
+                = simulation_0.get(MeshPartFactory.class);
+        SimpleBlockPart simpleBlockPart_0
+                = meshPartFactory_0.createNewBlockPart(simulation_0.get(SimulationPartManager.class));
+        simpleBlockPart_0.setPresentationName("jiami_1");
+
+        simpleBlockPart_0.setCoordinateSystem(labCoordinateSystem_0);
+
+        simpleBlockPart_0.getCorner1().setCoordinateSystem(labCoordinateSystem_0);
+
+        simpleBlockPart_0.getCorner1().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+
+        simpleBlockPart_0.getCorner1().setUnits0(units_0);
+
+        simpleBlockPart_0.getCorner1().setUnits1(units_0);
+
+        simpleBlockPart_0.getCorner1().setUnits2(units_0);
+
+        simpleBlockPart_0.getCorner1().setDefinition("");
+
+        simpleBlockPart_0.getCorner1().setValue(corner1);
+
+        simpleBlockPart_0.getCorner2().setCoordinateSystem(labCoordinateSystem_0);
+
+        simpleBlockPart_0.getCorner2().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+
+        simpleBlockPart_0.getCorner2().setUnits0(units_0);
+
+        simpleBlockPart_0.getCorner2().setUnits1(units_0);
+
+        simpleBlockPart_0.getCorner2().setUnits2(units_0);
+
+        simpleBlockPart_0.getCorner2().setDefinition("");
+
+        simpleBlockPart_0.getCorner2().setValue(corner2);
+        //创建加密区2
+        corner1.set(0, corner1.get(0) + Double.parseDouble(panel.corner3_x.getText()));
+        corner1.set(1, corner1.get(1) + Double.parseDouble(panel.corner3_y.getText()));
+        corner1.set(2, corner1.get(2) + Double.parseDouble(panel.corner3_z.getText()));
+        corner2.set(0, corner2.get(0) + Double.parseDouble(panel.corner4_x.getText()));
+        corner2.set(1, corner2.get(1) + Double.parseDouble(panel.corner4_y.getText()));
+        corner2.set(2, corner2.get(2) + Double.parseDouble(panel.corner4_z.getText()));
+//                BrickVolumeShape brickVolumeShape_1
+//                        = (BrickVolumeShape) simulation_0.get(VolumeShapeManager.class).createBrickVolumeShape();
+
+        SimpleBlockPart simpleBlockPart_1
+                = meshPartFactory_0.createNewBlockPart(simulation_0.get(SimulationPartManager.class));
+        simpleBlockPart_1.setPresentationName("jiami_2");
+
+        simpleBlockPart_1.setCoordinateSystem(labCoordinateSystem_0);
+
+        simpleBlockPart_1.getCorner1().setCoordinateSystem(labCoordinateSystem_0);
+
+        simpleBlockPart_1.getCorner1().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+
+        simpleBlockPart_1.getCorner1().setUnits0(units_0);
+
+        simpleBlockPart_1.getCorner1().setUnits1(units_0);
+
+        simpleBlockPart_1.getCorner1().setUnits2(units_0);
+
+        simpleBlockPart_1.getCorner1().setDefinition("");
+
+        simpleBlockPart_1.getCorner1().setValue(corner1);
+
+        simpleBlockPart_1.getCorner2().setCoordinateSystem(labCoordinateSystem_0);
+
+        simpleBlockPart_1.getCorner2().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+
+        simpleBlockPart_1.getCorner2().setUnits0(units_0);
+
+        simpleBlockPart_1.getCorner2().setUnits1(units_0);
+
+        simpleBlockPart_1.getCorner2().setUnits2(units_0);
+
+        simpleBlockPart_1.getCorner2().setDefinition("");
+
+        simpleBlockPart_1.getCorner2().setValue(corner2);
+
+        
+                                    /***************后视镜加密设置******************/        
+/*************************************************************************************************************************/        
+        
+        
+//       PartRepresentation partRepresentation_1 = ((PartRepresentation) simulation_0.getRepresentationManager().getObject("Geometry"));
+////        Scene scene_0 = simulation_0.getSceneManager().getScene("Geometry Scene 1");
+//        PartSurfaceMeshWidget partSurfaceMeshWidget_3 = partRepresentation_1.startSurfaceMeshWidget(scene_0);
+//        MeshPart simpleCylinderPart_1
+//                = ((MeshPart) simulation_0.get(SimulationPartManager.class).getPart("zhengti_wailiuchang"));
+//        MeshPart houshijing
+//                = ((MeshPart) simulation_0.get(SimulationPartManager.class).getPart("Houshijing"));//获取整车part
+//        RootDescriptionSource rootDescriptionSource_1 = simulation_0.get(SimulationMeshPartDescriptionSourceManager.class).getRootDescriptionSource();
+//        partSurfaceMeshWidget_3.setActiveParts(new NeoObjectVector(new Object[]{simpleCylinderPart_1,HoushijingPart}), rootDescriptionSource_1);
+//        partSurfaceMeshWidget_3.startSurfaceRepairControllers();//start surface repair
+//        scene_0.setAdvancedRenderingEnabled(false);
+//        SurfaceMeshWidgetDisplayController surfaceMeshWidgetDisplayController_3
+//                = partSurfaceMeshWidget_3.getControllers().getController(SurfaceMeshWidgetDisplayController.class);
+//        surfaceMeshWidgetDisplayController_2.showAllFaces();
+//
+//        SurfaceMeshWidgetSelectController surfaceMeshWidgetSelectController_3
+//                = partSurfaceMeshWidget_3.getControllers().getController(SurfaceMeshWidgetSelectController.class); 
+//        
+        
+        
+        
+        
+        
+        
+        
+        
+/*************************************************************************************************************************/         
+        
+        //创建车轮局部坐标系
+        SurfaceMeshWidgetSelectOptions surfaceMeshWidgetSelectOptions_0
+                = surfaceMeshWidgetSelectController_2.getOptions();
+        surfaceMeshWidgetSelectOptions_0.setCanSelectEdges(true);
+        Collection<PartCurve> partCurve_0
+                = simpleCylinderPart_0.getPartCurveManager().getPartCurves();
+
+        partCurve_0.forEach(partCurve -> {
+            if (partCurve.getPresentationName().contains("lun")) {
+                simulation_0.println(partCurve.getPresentationName());
+
+                surfaceMeshWidgetSelectController_2.selectPartCurves(new NeoObjectVector(new Object[]{partCurve}));
+                surfaceMeshWidgetSelectController_2.selectAttachedVertices();
+
+                SurfaceMeshWidgetQueryController surfaceMeshWidgetQueryController_1
+                        = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetQueryController.class);
+                DoubleVector coords = surfaceMeshWidgetQueryController_1.queryVertexXYZ().getDoubleVector("AllLabXYZCoords");
+                double x1 = coords.get(0);
+                double y1 = coords.get(1);
+                double z1 = coords.get(2);
+                double x2 = coords.get(3);
+                double y2 = coords.get(4);
+                double z2 = coords.get(5);
+                double x3 = coords.get(6);
+                double y3 = coords.get(7);
+                double z3 = coords.get(8);
+                double a1 = (y1 * z2 - y2 * z1 - y1 * z3 + y3 * z1 + y2 * z3 - y3 * z2),
+                        b1 = -(x1 * z2 - x2 * z1 - x1 * z3 + x3 * z1 + x2 * z3 - x3 * z2),
+                        c1 = (x1 * y2 - x2 * y1 - x1 * y3 + x3 * y1 + x2 * y3 - x3 * y2),
+                        d1 = -(x1 * y2 * z3 - x1 * y3 * z2 - x2 * y1 * z3 + x2 * y3 * z1 + x3 * y1 * z2 - x3 * y2 * z1);
+                double a2 = 2 * (x2 - x1),
+                        b2 = 2 * (y2 - y1),
+                        c2 = 2 * (z2 - z1),
+                        d2 = x1 * x1 + y1 * y1 + z1 * z1 - x2 * x2 - y2 * y2 - z2 * z2;
+                double a3 = 2 * (x3 - x1),
+                        b3 = 2 * (y3 - y1),
+                        c3 = 2 * (z3 - z1),
+                        d3 = x1 * x1 + y1 * y1 + z1 * z1 - x3 * x3 - y3 * y3 - z3 * z3;
+                double cx = -(b1 * c2 * d3 - b1 * c3 * d2 - b2 * c1 * d3 + b2 * c3 * d1 + b3 * c1 * d2 - b3 * c2 * d1)
+                        / (a1 * b2 * c3 - a1 * b3 * c2 - a2 * b1 * c3 + a2 * b3 * c1 + a3 * b1 * c2 - a3 * b2 * c1);
+                double cy = (a1 * c2 * d3 - a1 * c3 * d2 - a2 * c1 * d3 + a2 * c3 * d1 + a3 * c1 * d2 - a3 * c2 * d1)
+                        / (a1 * b2 * c3 - a1 * b3 * c2 - a2 * b1 * c3 + a2 * b3 * c1 + a3 * b1 * c2 - a3 * b2 * c1);
+                double cz = -(a1 * b2 * d3 - a1 * b3 * d2 - a2 * b1 * d3 + a2 * b3 * d1 + a3 * b1 * d2 - a3 * b2 * d1)
+                        / (a1 * b2 * c3 - a1 * b3 * c2 - a2 * b1 * c3 + a2 * b3 * c1 + a3 * b1 * c2 - a3 * b2 * c1);
+
+                CartesianCoordinateSystem cartesianCoordinateSystem_1
+                        = labCoordinateSystem_0.getLocalCoordinateSystemManager().createLocalCoordinateSystem(CartesianCoordinateSystem.class, "Cartesian");
+                cartesianCoordinateSystem_1.setPresentationName(partCurve.getPresentationName());
+
+                cartesianCoordinateSystem_1.getOrigin().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+
+                cartesianCoordinateSystem_1.getOrigin().setUnits0(units_0);
+
+                cartesianCoordinateSystem_1.getOrigin().setUnits1(units_0);
+
+                cartesianCoordinateSystem_1.getOrigin().setUnits2(units_0);
+
+                cartesianCoordinateSystem_1.getOrigin().setDefinition("");
+
+                cartesianCoordinateSystem_1.getOrigin().setValue(new DoubleVector(new double[]{cx, cy, cz}));
+
+                cartesianCoordinateSystem_1.setBasis0(new DoubleVector(new double[]{1.0, 0.0, 0.0}));
+
+                cartesianCoordinateSystem_1.setBasis1(new DoubleVector(new double[]{0.0, 1.0, 0.0}));
+                surfaceMeshWidgetSelectController_2.clearSelected();
+
+            }
+
+        });
+        partSurfaceMeshWidget_2.stop();
+        
+        createLocalCoord("Fan_yepian", "fan", new double []{1,0,0}, new double[]{0,1,0});
+
+    }
+
+    public void createLocalCoord(String partName, String curveName, double[] xBasis, double[] yBasis) {
+        Simulation simulation_0 = getActiveSimulation();
+        PartRepresentation partRepresentation_0 = ((PartRepresentation) simulation_0.getRepresentationManager().getObject("Geometry"));
+        Scene scene_0 = simulation_0.getSceneManager().getScene("Geometry Scene 1");
+        PartSurfaceMeshWidget partSurfaceMeshWidget_2 = partRepresentation_0.startSurfaceMeshWidget(scene_0);
+        MeshPart simpleCylinderPart_0
+                = ((MeshPart) simulation_0.get(SimulationPartManager.class).getPart(partName));
+        RootDescriptionSource rootDescriptionSource_0 = simulation_0.get(SimulationMeshPartDescriptionSourceManager.class).getRootDescriptionSource();
+        partSurfaceMeshWidget_2.setActiveParts(new NeoObjectVector(new Object[]{simpleCylinderPart_0}), rootDescriptionSource_0);
+        partSurfaceMeshWidget_2.startSurfaceRepairControllers();//start surface repair
+        SurfaceMeshWidgetDisplayController surfaceMeshWidgetDisplayController_2
+                = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetDisplayController.class);
+        surfaceMeshWidgetDisplayController_2.showAllFaces();
+
+        SurfaceMeshWidgetSelectController surfaceMeshWidgetSelectController_2
+                = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetSelectController.class);
+
+        LabCoordinateSystem labCoordinateSystem_0
+                = simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
+        
+        Units units_0
+                = ((Units) simulation_0.getUnitsManager().getObject("m"));
+        SurfaceMeshWidgetSelectOptions surfaceMeshWidgetSelectOptions_0
+                = surfaceMeshWidgetSelectController_2.getOptions();
+        surfaceMeshWidgetSelectOptions_0.setCanSelectEdges(true);
+        Collection<PartCurve> partCurve_0
+                = simpleCylinderPart_0.getPartCurveManager().getPartCurves();
+        partCurve_0.forEach(partCurve -> {
+            if (partCurve.getPresentationName().contains(curveName)) {
+                
+
+                surfaceMeshWidgetSelectController_2.selectPartCurves(new NeoObjectVector(new Object[]{partCurve}));
+                surfaceMeshWidgetSelectController_2.selectAttachedVertices();
+
+                SurfaceMeshWidgetQueryController surfaceMeshWidgetQueryController_1
+                        = partSurfaceMeshWidget_2.getControllers().getController(SurfaceMeshWidgetQueryController.class);
+                DoubleVector coords = surfaceMeshWidgetQueryController_1.queryVertexXYZ().getDoubleVector("AllLabXYZCoords");
+                double x1 = coords.get(0);
+                double y1 = coords.get(1);
+                double z1 = coords.get(2);
+                double x2 = coords.get(3);
+                double y2 = coords.get(4);
+                double z2 = coords.get(5);
+                double x3 = coords.get(6);
+                double y3 = coords.get(7);
+                double z3 = coords.get(8);
+                double a1 = (y1 * z2 - y2 * z1 - y1 * z3 + y3 * z1 + y2 * z3 - y3 * z2),
+                        b1 = -(x1 * z2 - x2 * z1 - x1 * z3 + x3 * z1 + x2 * z3 - x3 * z2),
+                        c1 = (x1 * y2 - x2 * y1 - x1 * y3 + x3 * y1 + x2 * y3 - x3 * y2),
+                        d1 = -(x1 * y2 * z3 - x1 * y3 * z2 - x2 * y1 * z3 + x2 * y3 * z1 + x3 * y1 * z2 - x3 * y2 * z1);
+                double a2 = 2 * (x2 - x1),
+                        b2 = 2 * (y2 - y1),
+                        c2 = 2 * (z2 - z1),
+                        d2 = x1 * x1 + y1 * y1 + z1 * z1 - x2 * x2 - y2 * y2 - z2 * z2;
+                double a3 = 2 * (x3 - x1),
+                        b3 = 2 * (y3 - y1),
+                        c3 = 2 * (z3 - z1),
+                        d3 = x1 * x1 + y1 * y1 + z1 * z1 - x3 * x3 - y3 * y3 - z3 * z3;
+                double cx = -(b1 * c2 * d3 - b1 * c3 * d2 - b2 * c1 * d3 + b2 * c3 * d1 + b3 * c1 * d2 - b3 * c2 * d1)
+                        / (a1 * b2 * c3 - a1 * b3 * c2 - a2 * b1 * c3 + a2 * b3 * c1 + a3 * b1 * c2 - a3 * b2 * c1);
+                double cy = (a1 * c2 * d3 - a1 * c3 * d2 - a2 * c1 * d3 + a2 * c3 * d1 + a3 * c1 * d2 - a3 * c2 * d1)
+                        / (a1 * b2 * c3 - a1 * b3 * c2 - a2 * b1 * c3 + a2 * b3 * c1 + a3 * b1 * c2 - a3 * b2 * c1);
+                double cz = -(a1 * b2 * d3 - a1 * b3 * d2 - a2 * b1 * d3 + a2 * b3 * d1 + a3 * b1 * d2 - a3 * b2 * d1)
+                        / (a1 * b2 * c3 - a1 * b3 * c2 - a2 * b1 * c3 + a2 * b3 * c1 + a3 * b1 * c2 - a3 * b2 * c1);
+
+                CartesianCoordinateSystem cartesianCoordinateSystem_1
+                        = labCoordinateSystem_0.getLocalCoordinateSystemManager().createLocalCoordinateSystem(CartesianCoordinateSystem.class, "Cartesian");
+                cartesianCoordinateSystem_1.setPresentationName(partCurve.getPresentationName());
+
+                cartesianCoordinateSystem_1.getOrigin().setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[]{0.0, 0.0, 0.0}));
+
+                cartesianCoordinateSystem_1.getOrigin().setUnits0(units_0);
+
+                cartesianCoordinateSystem_1.getOrigin().setUnits1(units_0);
+
+                cartesianCoordinateSystem_1.getOrigin().setUnits2(units_0);
+
+                cartesianCoordinateSystem_1.getOrigin().setDefinition("");
+
+                cartesianCoordinateSystem_1.getOrigin().setValue(new DoubleVector(new double[]{cx, cy, cz}));
+
+                cartesianCoordinateSystem_1.setBasis0(new DoubleVector(xBasis));
+
+                cartesianCoordinateSystem_1.setBasis1(new DoubleVector(yBasis));
+
+                surfaceMeshWidgetSelectController_2.clearSelected();
+
+            }
+
+        });
+        partSurfaceMeshWidget_2.stop();
+    }
+}
